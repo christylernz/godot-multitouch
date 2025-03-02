@@ -51,8 +51,20 @@ func _get_angle(a: Vector2, b: Vector2, c: Vector2) -> float:
 func _wrap_index(index: int, offset: int) -> int:
 	return (index + offset) % points.size()
 	
-func _save() -> void:
-	pass
-	
-func _load() -> void:
-	pass
+func _save():
+    var file = FileAccess.open(save_file_name, FileAccess.WRITE)
+    if file:
+        file.store_string(JSON.stringify(letter_patterns, "\t"))
+        file.close()
+        print("Patterns saved to", save_file_name)
+
+func _load():
+    if FileAccess.file_exists(save_file_name):
+        var file = FileAccess.open(save_file_name, FileAccess.READ)
+        if file:
+            var data = file.get_as_text()
+            var parsed = JSON.parse_string(data)
+            if parsed:
+                letter_patterns = parsed
+                print("Loaded patterns:", letter_patterns)
+            file.close()
