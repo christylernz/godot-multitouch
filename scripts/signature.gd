@@ -3,6 +3,7 @@ extends Node2D
 var points := [Vector2.ZERO, Vector2.ZERO, Vector2.ZERO]
 var touch_distances = {}
 var angles = {}
+export var save_file_name: String = "user://letter_patterns.json"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -39,6 +40,7 @@ func update_point(index: int, new_position: Vector2):
 		#TODO normalize the distance so that the signature is not affected by screen size. 
 		#Is there a normalised distance function? Or create a seperate distance function that takes into account max distance
 		#also experiment with normalising based on screen width and height
+		#also try using the distance_squared_to tonsee what impact that has
 		touch_distances[index] = points[index].distance_to(points[_wrap_index(index,1)])
 		angles[index] = _get_angle(points[_wrap_index(index,1)],points[index],points[_wrap_index(index,2)])
 		queue_redraw()
@@ -51,8 +53,13 @@ func _get_angle(a: Vector2, b: Vector2, c: Vector2) -> float:
 func _wrap_index(index: int, offset: int) -> int:
 	return (index + offset) % points.size()
 	
-func _save():
-    var file = FileAccess.open(save_file_name, FileAccess.WRITE)
+func _save(letter: String):
+  var signature = {
+    "letter": letter,
+    "touch_distances": touch_distances,
+    "touch_angles": angles
+  }
+  var file = FileAccess.open(save_file_name, FileAccess.WRITE)
     if file:
         file.store_string(JSON.stringify(letter_patterns, "\t"))
         file.close()
