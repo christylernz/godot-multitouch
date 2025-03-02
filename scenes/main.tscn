@@ -1,0 +1,103 @@
+[gd_scene load_steps=6 format=3 uid="uid://dluqnuguhxt28"]
+
+[ext_resource type="Script" path="res://scripts/Main.gd" id="1_8tt11"]
+[ext_resource type="Texture2D" uid="uid://cuu7bhhog3a76" path="res://assets/circle.png" id="2_1nwt1"]
+[ext_resource type="Script" path="res://scripts/show_debug.gd" id="3_x7crx"]
+[ext_resource type="Texture2D" uid="uid://dhiakj207a0p0" path="res://assets/debug.png" id="4_h7g58"]
+[ext_resource type="Script" path="res://scripts/signature.gd" id="5_1h8c2"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_8tt11")
+
+[node name="Circle_Container" type="Node2D" parent="."]
+
+[node name="Circle_0" type="Sprite2D" parent="Circle_Container"]
+visible = false
+modulate = Color(1, 0, 0, 1)
+position = Vector2(156, 185)
+scale = Vector2(3, 3)
+texture = ExtResource("2_1nwt1")
+
+[node name="Circle_1" type="Sprite2D" parent="Circle_Container"]
+visible = false
+modulate = Color(0, 1, 0, 1)
+position = Vector2(156, 185)
+scale = Vector2(3, 3)
+texture = ExtResource("2_1nwt1")
+
+[node name="Circle_2" type="Sprite2D" parent="Circle_Container"]
+visible = false
+modulate = Color(0, 0, 1, 1)
+position = Vector2(156, 185)
+scale = Vector2(3, 3)
+texture = ExtResource("2_1nwt1")
+
+[node name="DebugInterface" type="CanvasLayer" parent="."]
+
+[node name="GridContainer" type="GridContainer" parent="DebugInterface"]
+layout_direction = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1031.0
+offset_top = 10.0
+offset_right = -930.0
+offset_bottom = 141.0
+grow_horizontal = 0
+scale = Vector2(1.5, 1.5)
+columns = 2
+
+[node name="TouchCountText" type="Label" parent="DebugInterface/GridContainer"]
+layout_mode = 2
+text = "0"
+
+[node name="TouchCountLabel" type="Label" parent="DebugInterface/GridContainer"]
+layout_mode = 2
+text = "Touch"
+
+[node name="TouchOverflowText" type="Label" parent="DebugInterface/GridContainer"]
+layout_mode = 2
+text = "0"
+
+[node name="TouchOverflowLabel" type="Label" parent="DebugInterface/GridContainer"]
+layout_mode = 2
+text = "OverFlow"
+
+[node name="P1PositionText" type="Label" parent="DebugInterface/GridContainer"]
+layout_mode = 2
+text = "0,0"
+
+[node name="P1PositionLabel" type="Label" parent="DebugInterface/GridContainer"]
+layout_mode = 2
+text = "P1"
+
+[node name="P2PositionText" type="Label" parent="DebugInterface/GridContainer"]
+layout_mode = 2
+text = "0,0"
+
+[node name="P2PositionLabel" type="Label" parent="DebugInterface/GridContainer"]
+layout_mode = 2
+text = "P2"
+
+[node name="P3PositionText" type="Label" parent="DebugInterface/GridContainer"]
+layout_mode = 2
+text = "0,0"
+
+[node name="P3PositionLabel" type="Label" parent="DebugInterface/GridContainer"]
+layout_mode = 2
+text = "P3"
+
+[node name="ShowDebug" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(44, 48)
+texture = ExtResource("2_1nwt1")
+script = ExtResource("3_x7crx")
+
+[node name="Debug" type="Sprite2D" parent="ShowDebug"]
+position = Vector2(3.5, 1)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("4_h7g58")
+
+[node name="Signature" type="Node2D" parent="."]
+visible = false
+script = ExtResource("5_1h8c2")
