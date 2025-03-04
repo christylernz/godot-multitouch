@@ -13,8 +13,6 @@ extends Node2D
 var circles = []
 var active_touches = {}
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	for circle in circle_container.get_children():
 		circles.append(circle)
@@ -37,8 +35,7 @@ func _input(event):
 			if active_touches.has(i):
 				active_touches.erase(i)
 				
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	_update_display()
 	
 func _update_display():
@@ -56,7 +53,6 @@ func _update_display():
 	else:
 		touch_count.modulate = Color.WHITE	
 	_update_touch_points()
-	
 
 func _update_touch_points():
 	for i in range(circles.size()):

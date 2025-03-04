@@ -12,10 +12,10 @@ func _input(event: InputEvent) -> void:
 			dbg.visible = !dbg.visible
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 
-func is_touch_within_sprite(position: Vector2) -> bool:
-	var local_pos = to_local(position)
+func is_touch_within_sprite(touch_position: Vector2) -> bool:
+	var local_pos = to_local(touch_position)
 	return get_rect().has_point(local_pos)
