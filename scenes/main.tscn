@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://dluqnuguhxt28"]
+[gd_scene load_steps=8 format=3 uid="uid://dluqnuguhxt28"]
 
 [ext_resource type="Script" path="res://scripts/Main.gd" id="1_8tt11"]
 [ext_resource type="Texture2D" uid="uid://cuu7bhhog3a76" path="res://assets/circle.png" id="2_1nwt1"]
 [ext_resource type="Script" path="res://scripts/show_debug.gd" id="3_x7crx"]
 [ext_resource type="Texture2D" uid="uid://dhiakj207a0p0" path="res://assets/debug.png" id="4_h7g58"]
 [ext_resource type="Script" path="res://scripts/signature.gd" id="5_1h8c2"]
+[ext_resource type="Texture2D" uid="uid://0v3m5kh0b4cc" path="res://assets/diskette.png" id="5_lxe1d"]
+[ext_resource type="Script" path="res://scripts/trigger_save.gd" id="6_o3nsy"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_8tt11")
@@ -97,6 +99,16 @@ script = ExtResource("3_x7crx")
 position = Vector2(3.5, 1)
 scale = Vector2(0.8, 0.8)
 texture = ExtResource("4_h7g58")
+
+[node name="ShowSave" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(123, 49)
+texture = ExtResource("2_1nwt1")
+
+[node name="Save" type="Sprite2D" parent="ShowSave"]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("5_lxe1d")
+script = ExtResource("6_o3nsy")
 
 [node name="Signature" type="Node2D" parent="."]
 visible = false
