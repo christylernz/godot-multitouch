@@ -1,20 +1,13 @@
 extends Node2D
 
-var points := [Vector2.ZERO, Vector2.ZERO, Vector2.ZERO]
+var points = [Vector2.ZERO, Vector2.ZERO, Vector2.ZERO]
 var touch_distances = {}
 var angles = {}
-export var save_file_name: String = "user://letter_patterns.json"
+@export var save_file_name: String =  "/storage/emulated/0/Download/letter_patterns.json"
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	queue_redraw()
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-	
-	
 func _draw() -> void:
 	for i in points.size():
 		var start = points[i]
@@ -32,8 +25,10 @@ func _draw() -> void:
 		#draw angles
 		var angle_origin = points[i] + Vector2(10,-10)
 		draw_string(ThemeDB.fallback_font,angle_origin,"%.1f°" % rad_to_deg(angles[i]))
-		
-	
+
+func _wrap_index(index: int, offset: int) -> int:
+	return (index + offset) % points.size()
+
 func update_point(index: int, new_position: Vector2):
 	if index >= 0 and index < points.size():
 		points[index] = new_position
@@ -44,34 +39,38 @@ func update_point(index: int, new_position: Vector2):
 		touch_distances[index] = points[index].distance_to(points[_wrap_index(index,1)])
 		angles[index] = _get_angle(points[_wrap_index(index,1)],points[index],points[_wrap_index(index,2)])
 		queue_redraw()
-		
+
 func _get_angle(a: Vector2, b: Vector2, c: Vector2) -> float:
 	var ab = (a - b).normalized()
 	var bc = (c - b).normalized()
 	return acos(ab.dot(bc))
-	
-func _wrap_index(index: int, offset: int) -> int:
-	return (index + offset) % points.size()
-	
-func _save(letter: String):
-  var signature = {
-    "letter": letter,
-    "touch_distances": touch_distances,
-    "touch_angles": angles
-  }
-  var file = FileAccess.open(save_file_name, FileAccess.WRITE)
-    if file:
-        file.store_string(JSON.stringify(letter_patterns, "\t"))
-        file.close()
-        print("Patterns saved to", save_file_name)
 
-func _load():
-    if FileAccess.file_exists(save_file_name):
-        var file = FileAccess.open(save_file_name, FileAccess.READ)
-        if file:
-            var data = file.get_as_text()
-            var parsed = JSON.parse_string(data)
-            if parsed:
-                letter_patterns = parsed
-                print("Loaded patterns:", letter_patterns)
-            file.close()
+func _save_JSON(letter: String):
+	var signature = {
+		"letter" : letter,
+		"touch_distances" : touch_distances,
+		"touch_angles" : angles
+	}
+	var file = FileAccess.open(save_file_name, FileAccess.WRITE)
+	if file == null:
+		print("Error opening file:", FileAccess.get_open_error())
+		return
+	if file:
+		OS.request_permissions()
+		file.store_string(JSON.stringify(signature, "\t"))
+		file.close()
+		print("Saving to: ", ProjectSettings.globalize_path(save_file_name))
+	if FileAccess.file_exists(save_file_name):
+		print("File exists:", save_file_name)
+		_read_JSON()
+	else:
+		print("File does not exist yet, creating:", save_file_name)
+
+func _read_JSON():
+	if FileAccess.file_exists(save_file_name):
+		var file = FileAccess.open(save_file_name, FileAccess.READ)
+		var content = file.get_as_text()
+		print("File Contents:\n", content)
+		file.close()
+	else:
+		print("File does not exist")
